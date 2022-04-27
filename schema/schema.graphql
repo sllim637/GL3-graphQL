@@ -6,17 +6,17 @@ type Query {
   getUserById(id: Int): User!
 }
 
-
-
 enum TodoStatusEnum {
   WAITING
   IN_PROGRESS
   CANCLED
   DONE
 }
-
-
-
+enum MutationOperationType {
+  updated
+  deleted
+  added
+}
 type Todo {
   id: ID!
   name: String!
@@ -32,3 +32,28 @@ type User {
   todos: [Todo]
 }
 
+
+input TodoAddInput {
+  name: String!
+  content: String!
+  userId: Int!
+}
+
+input TodoUpdateInput {
+  name: String
+  content: String
+  userId: Int
+  status: TodoStatusEnum
+}
+type TodoSubscriptioPayload {
+  todo: Todo!
+  mutation: MutationOperationType!
+}
+type Mutation {
+  addTodo(addTodoInput: TodoAddInput): Todo!
+  updateTodo(id: Int!, updateTodoInput: TodoUpdateInput!): Todo!
+  deleteTodo(id: Int!): Todo!
+}
+type Subscription {
+  todo: TodoSubscriptioPayload!
+}
